@@ -9,7 +9,6 @@ Download images from ImageNET list of URLs
 ### TODO
 
 * Implement arguments
-  * --url <url>
-  * --output <dir>
   * --crop
+    * argparser is aware, but is not being used
   * --scale <dimension>
