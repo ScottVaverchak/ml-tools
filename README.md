@@ -1,14 +1,15 @@
 # Tools and Utils used for Machine Learning 
 
-Various tools used in my adventures in ML. While many of these tools exist in other repos, the main point of these were to increase my understanding of python.
+Various tools used in my adventures in ML. 
 
 ## grabber.py
 
 Download images from ImageNET list of URLs
 
-## todo
+### TODO
 
-* Implement arguments 
-* Implement OpenCV to crop and scale images 
-* ???
-* Profit
+* Implement arguments
+  * --url <url>
+  * --output <dir>
+  * --crop
+  * --scale <dimension>
