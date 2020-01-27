@@ -1,8 +1,10 @@
-# image-net-grabber
+# Tools and Utils used for Machine Learning 
 
-## Grab images from ImageNET urls
+Various tools used in my adventures in ML. While many of these tools exist in other repos, the main point of these were to increase my understanding of python.
 
-Download images from ImageNET list of URLs. 
+## grabber.py
+
+Download images from ImageNET list of URLs
 
 ## todo
 
