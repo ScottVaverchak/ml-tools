@@ -12,3 +12,6 @@ Download images from ImageNET list of URLs
     * add main
     * move argparse setup to its own function 
     * crop / scale / nothing needs to be refactored 
+  * This should run in parallel 
+  * Add sweet TUI with progress bar like: 
+    * [==== 34%      ] Downloading file.jpg... 
