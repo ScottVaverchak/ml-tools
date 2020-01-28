@@ -5,6 +5,7 @@ import os
 import cv2
 import numpy as np
 import argparse
+import math
 
 parser = argparse.ArgumentParser(description='Grab images from a ImageNET URL .. URL')
 parser.add_argument('url', help='URL to the list of URLs from ImageNET')
@@ -51,15 +52,36 @@ for url in urls[:args.count]:
     img = cv2.imread(outfile)
     imgout = np.empty((1,1))
     if args.crop:
+      height, width = img.shape[:2]
       mindim = min(img.shape[:2])
-      imgout = img[0:mindim, 0:mindim]
+      xoffset = 0
+      yoffset = 0
+      xend = mindim
+      yend = mindim
+
+      if width  > height:
+        halfdim = math.floor((width - height) / 2.0)
+        xoffset = halfdim
+        xend = mindim + halfdim
+      elif height > width:
+        halfdim = math.floor((height - width) / 2.0)
+        yoffset = halfdim
+        yend = mindim + halfdim
+      
+      print(f'Original: {width}w x {height}h')
+      print(f'New size: Starting at: {xoffset} x {yoffset} => {xend} x {yend}')
+      
+      # y, x not x, y
+      imgout = img[yoffset:yend, xoffset:xend]
+      
       if args.resize > 0:
         imgout = cv2.resize(imgout, (args.resize, args.resize))
     else:
       imgout = img
 
     cv2.imwrite(outfile, imgout)
-    
+    # cv2.imwrite(f'{args.output}TEST-{downloaded:04}_{filename}', imgout)
+
     downloaded += 1
     print(f"Downloaded {filename} ({downloaded} / {counter} ({round((downloaded / counter) * 100.0)}% success)")
   except Exception as ex:
