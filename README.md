@@ -6,9 +6,9 @@ Various tools used in my adventures in ML.
 
 Download images from ImageNET list of URLs
 
-### TODO
-
-* Implement arguments
-  * --crop
-    * argparser is aware, but is not being used
-  * --scale <dimension>
+### TODO 
+  * Add example to this README
+  * Refactor the actual code
+    * add main
+    * move argparse setup to its own function 
+    * crop / scale / nothing needs to be refactored 

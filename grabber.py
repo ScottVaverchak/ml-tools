@@ -9,9 +9,16 @@ import argparse
 parser = argparse.ArgumentParser(description='Grab images from a ImageNET URL .. URL')
 parser.add_argument('url', help='URL to the list of URLs from ImageNET')
 parser.add_argument('--output', dest='output', default='output/', help='Output directory (default: output/)')
+parser.add_argument('--count', dest='count', default=0, type=int, help='Maximum images amount to download - negative values will download all images (default: all of them)')
 parser.add_argument('--crop', dest='crop', action='store_true', help='Crop the image to smallest dimension (ie: 20x10 will crop to 10x10)')
-
+parser.add_argument('--resize', dest='resize', type=int, help='Resize the imahes in X and Y by the value. Requires cropping)')
 args = parser.parse_args()
+
+if args.resize and not args.crop:
+  parser.error('--reszie requires that --crop is set')
+
+if args.resize <= 0:
+  parser.error('--resize requires a value greater than zero')
 
 # "http://image-net.org/api/text/imagenet.synset.geturls?wnid=n04467665"
 imageneturl = args.url 
@@ -26,7 +33,10 @@ os.makedirs(args.output, exist_ok=True)
 downloaded = 0
 counter = 0
 
-for url in urls[:10]:
+if args.count <= 0:
+  args.count = len(urls)
+
+for url in urls[:args.count]:
   try:
     counter += 1
     uout = urllib.request.urlopen(url).read()
@@ -37,12 +47,18 @@ for url in urls[:10]:
     fbin = open(outfile, 'wb')
     fbin.write(uout)
     fbin.close()
-
+    
     img = cv2.imread(outfile)
-    mindim = min(img.shape[:2])
-    cropped = img[0:mindim, 0:mindim]
-    scaled = cv2.resize(cropped, (244, 244))
-    cv2.imwrite(outfile, scaled)
+    imgout = np.empty((1,1))
+    if args.crop:
+      mindim = min(img.shape[:2])
+      imgout = img[0:mindim, 0:mindim]
+      if args.resize > 0:
+        imgout = cv2.resize(imgout, (args.resize, args.resize))
+    else:
+      imgout = img
+
+    cv2.imwrite(outfile, imgout)
     
     downloaded += 1
     print(f"Downloaded {filename} ({downloaded} / {counter} ({round((downloaded / counter) * 100.0)}% success)")
