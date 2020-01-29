@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser(description='Grab images from a ImageNET URL ..
 parser.add_argument('url', help='URL to the list of URLs from ImageNET')
 parser.add_argument('--output', dest='output', default='output/', help='Output directory (default: output/)')
 parser.add_argument('--count', dest='count', default=0, type=int, help='Maximum images amount to download - negative values will download all images (default: all of them)')
+parser.add_argument('--timeout', dest='timeout', default=10, type=int, help='Timeout for HTTP requests in seconds (default: 10)')
 parser.add_argument('--crop', dest='crop', action='store_true', help='Crop the image to smallest dimension (ie: 20x10 will crop to 10x10)')
 parser.add_argument('--resize', dest='resize', type=int, help='Resize the imahes in X and Y by the value. Requires cropping)')
 args = parser.parse_args()
@@ -40,7 +41,7 @@ if args.count <= 0:
 for url in urls[:args.count]:
   try:
     counter += 1
-    uoutread = urllib.request.urlopen(url, timeout=10)
+    uoutread = urllib.request.urlopen(url, timeout=args.timeout)
     uout = uoutread.read() 
     filename = url.rsplit('/', 1)[-1]
     outfile = f'{args.output}{downloaded:04}_{filename}'
@@ -67,10 +68,7 @@ for url in urls[:args.count]:
         halfdim = math.floor((height - width) / 2.0)
         yoffset = halfdim
         yend = mindim + halfdim
-      
-      print(f'Original: {width}w x {height}h')
-      print(f'New size: Starting at: {xoffset} x {yoffset} => {xend} x {yend}')
-      
+    
       # y, x not x, y
       imgout = img[yoffset:yend, xoffset:xend]
       
@@ -80,7 +78,6 @@ for url in urls[:args.count]:
       imgout = img
 
     cv2.imwrite(outfile, imgout)
-    # cv2.imwrite(f'{args.output}TEST-{downloaded:04}_{filename}', imgout)
 
     downloaded += 1
     print(f"Downloaded {filename} ({downloaded} / {counter} ({round((downloaded / counter) * 100.0)}% success)")
