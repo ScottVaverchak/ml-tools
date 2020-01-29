@@ -40,8 +40,8 @@ if args.count <= 0:
 for url in urls[:args.count]:
   try:
     counter += 1
-    uout = urllib.request.urlopen(url).read()
-    
+    uoutread = urllib.request.urlopen(url, timeout=10)
+    uout = uoutread.read() 
     filename = url.rsplit('/', 1)[-1]
     outfile = f'{args.output}{downloaded:04}_{filename}'
     
