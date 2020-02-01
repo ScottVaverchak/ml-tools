@@ -12,7 +12,7 @@ args = parser.parse_args()
 if not os.path.isdir(args.directory):
   parser.error(f'{args.directory} is not a valid directory')
 
-files = os.listdir(args.directory)
+files = [f for f in os.listdir(args.directory) if os.path.isfile(os.path.join(args.directory, f))]
 
 for f in files:
   print(f)
