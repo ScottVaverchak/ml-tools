@@ -6,14 +6,17 @@ Various tools used in my adventures in ML.
 
 Partition image datasets into training, validation, and test for maximum ML
 
-### TODO 
- * Make it do its thing 
-   * Default will be 33%/33%/33% for T/V/T (*T*raining/*V*alidation/*T*est) or something
- * Parse a argument like: 70/15/15
+The pattern used for the split is:
+
+**T**raining / **V**aldation / **T**esting
+
+### TODO
+ * Refactor the movement of the files into something better
+ * Parse arguments like: 70/15/15
  * Parse wild cards like: 70/\*/\*
    * This would parse it as: 70/15/15
- * Add a .partignore or something to ignore some files (.DS_Store, I'm looking at you)
-
+ * Add a .partignore or something to ignore some file
+ 
 ## grabber.py
 
 Download images from ImageNET list of URLs
